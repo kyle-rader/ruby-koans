@@ -162,6 +162,11 @@ module Neo
       assert(expected == actual, msg)
     end
 
+    def assert_true(actual, msg=nil)
+      msg ||= "Expected #{actual} to be true"
+      assert_equal true, actual, msg
+    end
+
     def assert_not_equal(expected, actual, msg=nil)
       msg ||= "Expected #{expected.inspect} to not equal #{actual.inspect}"
       assert(expected != actual, msg)
