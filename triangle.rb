@@ -15,6 +15,11 @@ require 'set'
 #   about_triangle_project_2.rb
 #
 def triangle(a, b, c)
+  raise TriangleError if [a,b,c].any? {|v| v <= 0}
+  
+  l = [a,b,c].sort
+  raise TriangleError if l[0] + l[1] <= l[2]
+
   sides = Set[a, b, c]
   return :equilateral if sides.length == 1
   return :isosceles   if sides.length == 2
