@@ -30,12 +30,36 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+  counts = Hash.new(0)
+  for i in dice
+    counts[i] += 1
+  end
+
+  score = 0
+  # A set of three ones is 1000 points
+  score += 1000 if counts[1] >= 3
+
+  # A set of three numbers (other than ones) is worth 100 times the
+  # number. (e.g. three fives is 500 points).
+  for i in (2..6)
+    score += (i*100) if counts[i] >= 3
+  end
+
+  # A one (that is not part of a set of three) is worth 100 points.
+  score += 100 * (counts[1] % 3) # modding the count by 3 results in either 0, 1, or 2 ones that will be excluded from a set of 3.
+
+  # A five (that is not part of a set of three) is worth 50 points.
+  score += 50 * (counts[5] % 3) 
+  score
 end
 
 class AboutScoringProject < Neo::Koan
   def test_score_of_an_empty_list_is_zero
     assert_equal 0, score([])
+  end
+
+  def test_4_fours
+    assert_equal 400, score([4, 4, 4, 4, 2])
   end
 
   def test_score_of_a_single_roll_of_5_is_50
